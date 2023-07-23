@@ -15,17 +15,41 @@
         };
 
         async function detect() {
-            const barcodeDetector = new BarcodeDetector();
+            const barcodeDetector = new BarcodeDetector({
+                formats: [
+                    'aztec',
+                    'code_128',
+                    'code_39',
+                    'code_93',
+                    'codabar',
+                    'data_matrix',
+                    'ean_13',
+                    'ean_8',
+                    'itf',
+                    'pdf417',
+                    'qr_code',
+                    'upc_a',
+                    'upc_e'
+                ]
+            });
             const list = document.getElementById("barcode-list");
             let itemsFound = [];
             const mediaStream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: "environment" }
+                video: {
+                    facingMode: "user", // environment는 후면 캠, user는 전면 캠
+                    width: { min: 1024, ideal: 1280, max: 1920 },
+                    height: { min: 576, ideal: 720, max: 1080 },
+                    frameRate: { ideal: 10, max: 15 }
+                },
+                audio: false,
             });
 
             const video = document.createElement("video");
             video.srcObject = mediaStream;
-            video.autoplay = true;
-
+            // video.autoplay = true;
+            video.onloadedmetadata = () => {
+                video.play();
+            }
             list.before(video);
 
             function render() {
