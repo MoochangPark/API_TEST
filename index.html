@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+    <span></span>
     <script>
         var battery = navigator.battery || navigator.mozBattery || navigator.webkitBattery;
 
-function updateBatteryStatus() {
-  console.log("Battery status: " + battery.level * 100 + " %");
+        function updateBatteryStatus() {
+            const span = document.querySelector('span');
+            span.innerText = `Battery status: ${battery.level * 100}%`;
 
-  if (battery.charging) {
-    console.log("Battery is charging");
-  }
-}
+            if (battery.charging) {
+                span.innerText = "Battery is charging";
+            }
+        }
 
-battery.addEventListener("chargingchange", updateBatteryStatus);
-battery.addEventListener("levelchange", updateBatteryStatus);
-updateBatteryStatus();
+        battery.addEventListener("chargingchange", updateBatteryStatus);
+        battery.addEventListener("levelchange", updateBatteryStatus);
+        updateBatteryStatus();
 
     </script>
 </body>
+
 </html>
