@@ -10,9 +10,15 @@
 <body>
     <ul id="barcode-list"></ul>
     <script>
+        if ('BarcodeDetector' in window) {
+  console.log('BarcodeDetector is supported.');
+}else{
+    console.log('BarcodeDetector is supported.')
+}
         window.onload = () => {
             detect();
         };
+
 
         async function detect() {
             const barcodeDetector = new BarcodeDetector({
