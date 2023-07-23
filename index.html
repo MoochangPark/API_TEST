@@ -1,34 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
 <body>
-    <button id="myButton">click</button>
     <script>
-        document.querySelector("#myButton").addEventListener("click", async () => {
+        var battery = navigator.battery || navigator.mozBattery || navigator.webkitBattery;
 
-            if (!navigator.mediaDevices.selectAudioOutput) {
-                console.log("selectAudioOutput() not supported or not in secure context.");
-                return;
-            }
+function updateBatteryStatus() {
+  console.log("Battery status: " + battery.level * 100 + " %");
 
-            // Display prompt to select device
-            const audioDevice = await navigator.mediaDevices.selectAudioOutput();
+  if (battery.charging) {
+    console.log("Battery is charging");
+  }
+}
 
-            // Create an audio element and start playing audio on the default device
-            const audio = document.createElement("audio");
-            audio.src = "https://127.0.0.1;5500/example.mp3";
-            audio.play();
+battery.addEventListener("chargingchange", updateBatteryStatus);
+battery.addEventListener("levelchange", updateBatteryStatus);
+updateBatteryStatus();
 
-            // Change the sink to the selected audio output device.
-            audio.setSinkId(audioDevice.deviceId);
-        });
     </script>
 </body>
-
 </html>
